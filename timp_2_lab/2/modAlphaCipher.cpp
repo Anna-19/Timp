@@ -8,16 +8,23 @@ void modAlphaCipher::set_key(std::wstring & ws_key)
 {
 	pillar = getValidKey(ws_key);
 }
-void modAlphaCipher::set_tableform(const std::wstring& open_text)
-{
-	len_text = open_text.size();
-	if (len_text>pillar) {
-		rad = len_text/pillar;
-		if (len_text%pillar >0) rad+=1;
-	} else {
-		rad = 1;
-	}
+void modAlphaCipher::set_tableform(const std::wstring& open_text) {
+  len_text = open_text.size();
+  if (len_text > 0) {
+    if (pillar > len_text) {
+      throw cipher_error("Invalid key. Key length should not exceed the length of the input text");
+    }
+    if (len_text > pillar) {
+      rad = len_text / pillar;
+      if (len_text % pillar > 0) rad += 1;
+    } else {
+      rad = 1;
+    }
+  } else {
+    throw cipher_error("Input text is missing");
+  }
 }
+
 std::wstring modAlphaCipher::encrypt( std::wstring& open_text)
 {
 	open_text = getValidOpenText(open_text);

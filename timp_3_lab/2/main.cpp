@@ -1,5 +1,5 @@
 #include <UnitTest++/UnitTest++.h>
-#include <modAlphaCipher.h>
+#include <Cipher.h>
 #include <iostream>
 #include <locale>
 #include <codecvt>
@@ -22,7 +22,7 @@ SUITE(KeyTest)
         CHECK_EQUAL("РА-ЕПАЧЕХ", codec.to_bytes(Cipher(L"3").encrypt(L"ЧЕРЕПАХА")));
     }
     TEST(LongKey) {
-        CHECK_EQUAL("--АХАПЕРЕЧ",codec.to_bytes(Cipher(L"10").encrypt(L"ЧЕРЕПАХА")));
+        CHECK_EQUAL("Х-А-П-Е-Р-Е-ЧА",codec.to_bytes(Cipher(L"7").encrypt(L"ЧЕРЕПАХА")));
     }
     TEST(ShortKey) {
         CHECK_EQUAL("ЕЕААЧРПХ",codec.to_bytes(Cipher(L"2").encrypt(L"ЧЕРЕПАХА")));
@@ -39,6 +39,11 @@ SUITE(KeyTest)
     TEST(AlphaAndPunctuationInKey) {
         CHECK_THROW(Cipher cp(L"Привет!"),cipher_error);
     }
+    TEST(LongKeyTextLength) {
+    Cipher cp(L"10"); 
+    CHECK_THROW(cp.encrypt(L"Черепаха"), cipher_error); 
+}
+
 }
 SUITE(EncryptTest)
 {
